@@ -1,0 +1,26 @@
+{
+  "name": "Farmers-App",
+  "version": "1.0.0",
+  "description": "Do these commands",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "backend": "cd NFE-backend && npm start",
+    "frontend": "cd NFE-frontend && npm start",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ATHULKNAIR/Farmers-App.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ATHULKNAIR/Farmers-App/issues"
+  },
+  "homepage": "https://github.com/ATHULKNAIR/Farmers-App#readme",
+  "devDependencies": {
+    "concurrently": "^6.1.0"
+  }
+}
