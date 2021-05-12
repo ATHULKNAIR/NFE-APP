@@ -14,7 +14,7 @@ const initialState = {
     success: ''
 }
 
-function Register() {
+function BuyerRegister() {
     const [user, setUser] = useState(initialState)
 
     const {name, email, password,cf_password, err, success} = user
@@ -94,4 +94,4 @@ function Register() {
     )
 }
 
-export default Register
+export default BuyerRegister

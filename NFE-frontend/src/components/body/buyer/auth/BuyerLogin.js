@@ -14,7 +14,7 @@ const initialState = {
     success: ''
 }
 
-function Login() {
+function BuyerLogin() {
     const [user, setUser] = useState(initialState)
     const dispatch = useDispatch()
     const history = useHistory()
@@ -76,4 +76,4 @@ function Login() {
     )
 }
 
-export default Login
+export default BuyerLogin
