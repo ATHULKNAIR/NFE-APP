@@ -40,7 +40,7 @@ function FRegister() {
             return setUser({...user, err: "Password did not match.", success: ''})
 
         try {
-            const res = await axios.post('http://localhost:5000/buyer/register', {
+            const res = await axios.post('http://localhost:5000/farmer/register', {
                 name, phoneNo, password
             }).then((res)=>{
                 console.log(res.data   )
