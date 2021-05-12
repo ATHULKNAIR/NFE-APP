@@ -95,15 +95,28 @@ const buyerCtrl = {
     },
     editBuyer : async (req,res)=>{
         try {
-            const {name,photo,phoneNo,gender,location,product} = req.body;
+            const {name,photo,product} = req.body;
+            if(!name || !photo || !product){
+                return res.status(400).json({msg:"Please fill all fileds"});
+            }
             await Buyer.findOneAndUpdate({_id:req.user.id},{
-                name,photo,phoneNo,gender,location,product
+                name,photo,product
             })
             res.json({msg:"Updated..!"})
         } catch (err) {
             return res.status(500).json({msg:err.message});
         }
     },
+    deleteBuyer : async (req,res)=>{
+        try {
+            await Buyer.findByIdAndDelete(req.params.id);
+            res.json({msg:"Deleted Farmer"});
+        } catch (err) {
+            return res.status(500).json({msg:err.message});
+        }
+    }
+    
+    
 
 }
 

@@ -74,7 +74,7 @@ const farmerCtrl = {
             return res.status(500).json({msg:err.message});
         }
     },
-    getBuyerInfor : async (req,res)=>{
+    getFarmerInfor : async (req,res)=>{
         try {
             const farmer  = await Farmer.findById(req.user.id).select("-password");
             res.json({farmer });
@@ -91,13 +91,30 @@ const farmerCtrl = {
         }
     },
 
-    // editFarmer : async (req,res)=>{
-    //     try {
-    //         const {name}
-    //     } catch (err) {
-    //         return res.status(500).json({msg:err.message});
-    //     }
-    // },
+    editFarmer : async (req,res)=>{
+        try {
+            const {name,photo,product} = req.body;
+            if(!name || !photo || !product){
+                return res.status(400).json({msg:"Please fill all fileds"});
+            }
+            await Farmer.findOneAndUpdate({_id:req.user.id},{
+                 name,photo,product
+            })
+                res.json({msg:"Updated..!"});
+        } catch (err) {
+            return res.status(500).json({msg:err.message});
+        }
+    },
+    deleteFarmer : async (req,res)=>{
+        try {
+            await Farmer.findByIdAndDelete(req.params.id);
+            res.json({msg:"Deleted Farmer"});
+        } catch (err) {
+            return res.status(500).json({msg:err.message});
+        }
+    }
+
+    
 }
  
 const createAccessToken = (user)=>{

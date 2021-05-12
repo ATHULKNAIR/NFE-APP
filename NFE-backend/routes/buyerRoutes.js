@@ -11,4 +11,5 @@ router.get('/logout',auth,buyerCtrl.logout);
 router.get('/profile',auth,buyerCtrl.getBuyerInfor);
 router.get('/all_infor',auth,authAdmin,buyerCtrl.getUsersAllInfor)
 router.patch('/profile/edit',auth,buyerCtrl.editBuyer);
+router.delete('/buyer/delete/:id',auth,authAdmin,buyerCtrl.deleteBuyer);
 module.exports = router;
