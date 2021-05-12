@@ -6,8 +6,10 @@ const farmerCtrl = {
 
     register : async (req,res)=>{
         try {
+
             const {name,phoneNo,password
                 // ,gender,location,photo
+
             } = req.body;
             
             const farmer = await Farmer.findOne({phoneNo});
@@ -20,7 +22,10 @@ const farmerCtrl = {
             const passwordHash = await bcrypt.hash(password,10);
             const newFarmer = new Farmer({
                 name,phoneNo,password:passwordHash,
-                // gender,location,photo
+
+
+                //gender,location,photo
+
             });
 
             await newFarmer.save();
