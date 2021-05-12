@@ -5,6 +5,9 @@ import Register from './buyer/auth/Register'
 import {useSelector} from 'react-redux'
 import NotFound from '../utils/notFound';
 import Home from './home/home'
+import FLogin from './farmer/auth/FLogin';
+import FRegister from './farmer/auth/FRegister'
+
 
 function Body() {
     const auth = useSelector(state => state.auth)
@@ -16,6 +19,8 @@ function Body() {
 
                 <Route path="/buyer/login" component={isLogged ? NotFound : Login} exact />
                 <Route path="/buyer/register" component={ isLogged ? NotFound : Register} exact />
+                <Route path="/farmer/login" component={isLogged ? NotFound : FLogin} exact />
+                <Route path="/farmer/register" component={ isLogged ? NotFound : FRegister} exact />
 
 
             </Switch>

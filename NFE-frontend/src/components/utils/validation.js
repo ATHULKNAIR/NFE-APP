@@ -8,6 +8,11 @@ export const isEmail = email => {
     return re.test(email);
 }
 
+export const isPhone = phone =>{
+    if(phone.length === 10) return true
+    return false
+}
+
 export const isLength = password => {
     if(password.length < 6) return true
     return false
