@@ -52,7 +52,11 @@ const buyerCtrl = {
              const accesstoken = createAccessToken({id : buyer._id});
              const refreshtoken = createRefreshToken({id : buyer._id});
 
-             res.cookie('refreshtoken',refreshtoken);
+             res.cookie('refreshtoken',refreshtoken,{
+                 httpOnly : true,
+                 path : '/buyer/refreshtoken',
+                 maxAge : 7*24*60*60*1000
+             });
 
              res.json({accesstoken});
          } catch (err) {
@@ -62,11 +66,42 @@ const buyerCtrl = {
 
      logout : async (req,res)=>{
         try {
-            res.clearCookie('refreshtoken')
+            res.clearCookie('refreshtoken',{
+                path : '/buyer/refreshtoken'
+            })
             return res.json({msg:"Logged Out"})
             
         } catch (err) {
           return res.status(500).json({msg:err.message})
+        }
+    },
+
+    getBuyerInfor : async (req,res)=>{
+        try {
+            const buyer  = await Buyer.findById(req.user.id).select("-password");
+            res.json({buyer });
+        } catch (err) {
+            res.status(500).json({msg:err.message});
+        }
+    },
+
+    getUsersAllInfor : async (req,res)=>{
+        try {
+            const user = await Buyer.find().select("-password");
+            res.json(user);
+        } catch (err) {
+            res.status(500).json({msg:err.message})
+        }
+    },
+    editBuyer : async (req,res)=>{
+        try {
+            const {name,photo,phoneNo,gender,location,product} = req.body;
+            await Buyer.findOneAndUpdate({_id:req.user.id},{
+                name,photo,phoneNo,gender,location,product
+            })
+            res.json({msg:"Updated..!"})
+        } catch (err) {
+            return res.status(500).json({msg:err.message});
         }
     },
 

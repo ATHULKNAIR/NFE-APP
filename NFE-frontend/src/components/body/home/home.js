@@ -7,7 +7,7 @@ function Home() {
         <div className="home_page">
             <div className="row">
                     
-                    <Link to="/farmer/login">Farmer</Link>
+                    <Link to="/farmer/register">Farmer</Link>
                 </div>
                 <div className="row">
                    

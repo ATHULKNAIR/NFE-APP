@@ -6,7 +6,9 @@ const farmerCtrl = {
 
     register : async (req,res)=>{
         try {
-            const {username,phoneNo,password,gender,location,photo} = req.body;
+            const {name,phoneNo,password
+                // ,gender,location,photo
+            } = req.body;
             
             const farmer = await Farmer.findOne({phoneNo});
             if(farmer){
@@ -17,7 +19,8 @@ const farmerCtrl = {
             }
             const passwordHash = await bcrypt.hash(password,10);
             const newFarmer = new Farmer({
-                username,phoneNo,password:passwordHash,gender,location,photo
+                name,phoneNo,password:passwordHash,
+                // gender,location,photo
             });
 
             await newFarmer.save();
@@ -43,7 +46,11 @@ const farmerCtrl = {
             const accesstoken = createAccessToken({id:farmer._id});
             const refreshtoken = createRefreshToken({id:farmer._id});
 
-            res.cookie('refreshtoken',refreshtoken);
+            res.cookie('refreshtoken',refreshtoken,{
+                httpOnly : true,
+                path : '/buyer/refreshtoken',
+                maxAge : 7*24*60*60*1000
+            });
 
             res.json({accesstoken});
             
@@ -54,27 +61,34 @@ const farmerCtrl = {
     
      logout : async (req,res)=>{
         try {
-            res.clearCookie('refreshtoken')
+            res.clearCookie('refreshtoken',{
+                path : '/buyer/refreshtoken'
+            })
             return res.json({msg:"Logged Out"})
         } catch (err) {
             return res.status(500).json({msg:err.message});
         }
     },
-    // register : async (req,res)=>{
+    getBuyerInfor : async (req,res)=>{
+        try {
+            const farmer  = await Farmer.findById(req.user.id).select("-password");
+            res.json({farmer });
+        } catch (err) {
+            res.status(500).json({msg:err.message});
+        }
+    },
+    getUsersAllInfor : async (req,res)=>{
+        try {
+            const user = await Buyer.find().select("-password");
+            res.json(user);
+        } catch (err) {
+            res.status(500).json({msg:err.message})
+        }
+    },
+
+    // editFarmer : async (req,res)=>{
     //     try {
-            
-    //     } catch (err) {
-    //         return res.status(500).json({msg:err.message});
-    //     }
-    // },register : async (req,res)=>{
-    //     try {
-            
-    //     } catch (err) {
-    //         return res.status(500).json({msg:err.message});
-    //     }
-    // },register : async (req,res)=>{
-    //     try {
-            
+    //         const {name}
     //     } catch (err) {
     //         return res.status(500).json({msg:err.message});
     //     }
