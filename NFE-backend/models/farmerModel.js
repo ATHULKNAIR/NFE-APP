@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const farmerSchema = new mongoose.Schema({
-    username : {
+    name : {
         type : String,
         required : [true,"Please enter your name"],
         trim:true
