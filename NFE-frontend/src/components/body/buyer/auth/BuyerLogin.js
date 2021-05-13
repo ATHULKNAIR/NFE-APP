@@ -30,14 +30,16 @@ function BuyerLogin() {
     const handleSubmit = async e => {
         e.preventDefault()
         try {
-            const res = await axios.post('/buyer/login', {email, password})
+            const res = await axios.post('http://localhost:5000/buyer/login', {email, password})
+            .then((res)=>{
             setUser({...user, err: '', success: res.data.msg})
 
             localStorage.setItem('firstLogin', true)
-
             dispatch(dispatchLogin())
-            history.push("/")
-
+            history.push("/buyer/home")
+        })
+           
+           
         } catch (err) {
             err.response.data.msg && 
             setUser({...user, err: err.response.data.msg, success: ''})

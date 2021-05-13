@@ -56,3 +56,6 @@ header h2{
 .drop-nav:hover .dropdown{
     display: block;
 }
+.photo{
+    border-radius: 50px;
+}

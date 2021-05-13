@@ -8,7 +8,8 @@ import Home from './home/home'
 
 import FarmerRegister from './farmer/auth/FarmerRegister';
 import FarmerLogin from './farmer/auth/FamerLogin';
-
+import Profile from '../body/buyer/profile/Profile';
+import BuyerHome from "./buyer/feed/BuyerHome";
 
 function Body() {
     const auth = useSelector(state => state.auth)
@@ -22,6 +23,8 @@ function Body() {
                 <Route path="/buyer/register" component={ isLogged ? NotFound : BuyerRegister} exact />
                 <Route path="/farmer/login" component={ isLogged ? NotFound : FarmerLogin} exact />
                 <Route path="/farmer/register" component={isLogged? NotFound : FarmerRegister} exact/>
+                <Route path="/buyer/profile" component={isLogged? Profile : NotFound} exact/>
+                <Route path="/buyer/home" component={isLogged? BuyerHome : NotFound} exact/>
 
 
             </Switch>
