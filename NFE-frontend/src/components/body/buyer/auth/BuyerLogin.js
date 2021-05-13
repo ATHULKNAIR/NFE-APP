@@ -74,7 +74,12 @@ function BuyerLogin() {
             </form>
 
             <p>New Customer? <Link to="/buyer/register">Register</Link></p>
+        
+            <div>
+              <Link to='/'>Back</Link>
+            </div>
         </div>
+        
     )
 }
 

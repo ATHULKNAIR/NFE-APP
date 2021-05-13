@@ -94,7 +94,7 @@ const buyerCtrl = {
     getBuyerInfor : async (req,res)=>{
         try {
             const buyer  = await Buyer.findById(req.user.id).select("-password");
-            res.json(buyer);
+            res.json(buyer.name);
         } catch (err) {
             res.status(500).json({msg:err.message});
         }

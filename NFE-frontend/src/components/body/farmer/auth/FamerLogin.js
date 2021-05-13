@@ -30,13 +30,13 @@ function FarmerLogin() {
     const handleSubmit = async e => {
         e.preventDefault()
         try {
-            const res = await axios.post('/farmer/login', {phoneNo, password})
+            const res = await axios.post('http://localhost:5000/farmer/login', {phoneNo, password})
             setUser({...user, err: '', success: res.data.msg})
 
-            localStorage.setItem('firstLogin', true)
+            localStorage.setItem('secondLogin', true)
 
             dispatch(dispatchLogin())
-            history.push("/")
+            history.push("/farmer/home")
 
         } catch (err) {
             err.response.data.msg && 
@@ -72,6 +72,9 @@ function FarmerLogin() {
             </form>
 
             <p>New Customer? <Link to="/farmer/register">Register</Link></p>
+            <div>
+              <Link to='/'>Back</Link>
+            </div>
         </div>
     )
 }

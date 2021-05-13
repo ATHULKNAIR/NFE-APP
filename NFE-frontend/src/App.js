@@ -21,7 +21,7 @@ function App() {
       const firstLogin = localStorage.getItem('firstLogin')
       if(firstLogin){
         const getToken = async ()=>{
-           const res = await axios.post('http://localhost:5000/buyer/refreshtoken',null)
+           const res = await axios.post('http://localhost:5000/farmer/refreshtoken',null)
            dispatch({type: 'GET_TOKEN', payload: res.data.access_token})
         }
         getToken();

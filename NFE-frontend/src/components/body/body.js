@@ -1,15 +1,17 @@
 import React from 'react'
 import {Switch, Route} from 'react-router-dom'
-import BuyerLogin from './buyer/auth/BuyerLogin'
-import BuyerRegister from './buyer/auth/BuyerRegister'
 import {useSelector} from 'react-redux'
 import NotFound from '../utils/notFound';
-import Home from './home/home'
 
+import Home from './home/home'
+import BuyerLogin from './buyer/auth/BuyerLogin'
+import BuyerRegister from './buyer/auth/BuyerRegister'
 import FarmerRegister from './farmer/auth/FarmerRegister';
 import FarmerLogin from './farmer/auth/FamerLogin';
-import Profile from '../body/buyer/profile/Profile';
-import BuyerHome from "./buyer/feed/BuyerHome";
+import Profile from './buyer/Pages/BuyerProfile';
+import BuyerHome from "./buyer/Pages/BuyerHome";
+import FarmerProfile from './farmer/Pages/FarmerProfile';
+import FarmerHome from './farmer/Pages/FarmerHome';
 
 function Body() {
     const auth = useSelector(state => state.auth)
@@ -25,6 +27,8 @@ function Body() {
                 <Route path="/farmer/register" component={isLogged? NotFound : FarmerRegister} exact/>
                 <Route path="/buyer/profile" component={isLogged? Profile : NotFound} exact/>
                 <Route path="/buyer/home" component={isLogged? BuyerHome : NotFound} exact/>
+                <Route path="/farmer/home" component={isLogged? FarmerHome : NotFound} exact/>
+                <Route path="/farmer/profile" component={isLogged? FarmerProfile : NotFound} exact/>
 
 
             </Switch>

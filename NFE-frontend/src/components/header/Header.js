@@ -13,9 +13,12 @@ function Header() {
 
     const handleLogout = async () => {
         try {
-            await axios.get('/buyer/logout')
-            localStorage.removeItem('firstLogin')
-            window.location.href = "/buyer/login";
+            await axios.get('http://localhost/farmer/logout')
+           
+                localStorage.removeItem('firstLogin')
+                window.location.href = "/farmer/login";
+          
+            
         } catch (err) {
             window.location.href = "/";
         }
@@ -23,13 +26,10 @@ function Header() {
 
     const userLink = () => {
         return <li className="drop-nav">
-            <Link to="#" className="photo">
-            <img src={user.photo} alt=""/> {user.name} <i className="fas fa-angle-down"></i>
-            </Link>
-            <ul className="dropdown">
+           
                
-                <li><Link to="/" onClick={handleLogout}>Logout</Link></li>
-            </ul>
+                <li><Link to="/farmer/login" onClick={handleLogout}>Logout</Link></li>
+            
         </li>
     }
 

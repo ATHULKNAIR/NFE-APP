@@ -44,18 +44,20 @@ header h2{
 }
 .drop-nav .dropdown{
     position: absolute;
-    background: #282c34;
+    background: #1b253a;
+    opacity:0.2;
     width: 100%;
-    width: calc(100% + 30px);
+    width: calc(100% + 100px);
     top: 50px;
     display: none;
 }
 .drop-nav .dropdown li{
     display: block;
+    
 }
 .drop-nav:hover .dropdown{
     display: block;
 }
-.photo{
+.avatar{
     border-radius: 50px;
 }
