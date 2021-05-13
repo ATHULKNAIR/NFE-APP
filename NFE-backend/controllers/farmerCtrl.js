@@ -53,21 +53,36 @@ const farmerCtrl = {
 
             res.cookie('refreshtoken',refreshtoken,{
                 httpOnly : true,
-                path : '/buyer/refreshtoken',
+                path : '/farmer/refreshtoken',
                 maxAge : 7*24*60*60*1000
             });
 
-            res.json({accesstoken});
+            res.json({msg:"Logged In"});
             
         } catch (err) {
             return res.status(500).json({msg:err.message});
+        }
+    },
+    getAccessToken : async (req,res)=>{
+        try {
+            const rf_token = req.cookies.refreshtoken;
+            if(!rf_token){
+                return res.status(400).json({msg:"Please Login..!"})
+            }
+            jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+              if(err) return res.status(400).json({msg: "Please login now!"})
+              const access_token = createAccessToken({id: user.id})
+                  res.json({access_token})
+            })
+        } catch (err) {
+            return res.status(500).json({msg:err.message})
         }
     },
     
      logout : async (req,res)=>{
         try {
             res.clearCookie('refreshtoken',{
-                path : '/buyer/refreshtoken'
+                path : '/farmer/refreshtoken'
             })
             return res.json({msg:"Logged Out"})
         } catch (err) {

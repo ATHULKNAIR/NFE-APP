@@ -57,12 +57,27 @@ const buyerCtrl = {
                  path : '/buyer/refreshtoken',
                  maxAge : 7*24*60*60*1000
              });
-
-             res.json({accesstoken});
+             
+             res.json({msg:"Logged In"});
          } catch (err) {
              res.status(500).json({msg:err.message})
          }
      },
+     getAccessToken : async (req,res)=>{
+        try {
+            const rf_token = req.cookies.refreshtoken;
+            if(!rf_token){
+                return res.status(400).json({msg:"Please Login..!"})
+            }
+            jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+              if(err) return res.status(400).json({msg: "Please login now!"})
+              const access_token = createAccessToken({id: user.id})
+                  res.json({access_token})
+            })
+        } catch (err) {
+            return res.status(500).json({msg:err.message})
+        }
+    },
 
      logout : async (req,res)=>{
         try {
@@ -79,7 +94,7 @@ const buyerCtrl = {
     getBuyerInfor : async (req,res)=>{
         try {
             const buyer  = await Buyer.findById(req.user.id).select("-password");
-            res.json({buyer });
+            res.json(buyer);
         } catch (err) {
             res.status(500).json({msg:err.message});
         }
@@ -87,8 +102,8 @@ const buyerCtrl = {
 
     getUsersAllInfor : async (req,res)=>{
         try {
-            const user = await Buyer.find().select("-password");
-            res.json(user);
+            const buyer = await Buyer.find().select("-password");
+            res.json(buyer);
         } catch (err) {
             res.status(500).json({msg:err.message})
         }
@@ -103,9 +118,9 @@ const buyerCtrl = {
     editBuyer : async (req,res)=>{
         try {
             const {name,photo,product} = req.body;
-            if(!name || !photo || !product){
-                return res.status(400).json({msg:"Please fill all fileds"});
-            }
+            // if(!name || !photo || !product){
+            //     return res.status(400).json({msg:"Please fill all fileds"});
+            // }
             await Buyer.findOneAndUpdate({_id:req.user.id},{
                 name,photo,product
             })
