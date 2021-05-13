@@ -10,7 +10,7 @@ import FRegister from './farmer/auth/FRegister'
 import FHome from '../FHome/FHome';
 // import Bidding from './pages/bidding';
 // import Contract from './pages/contract';
-import Profile from '../body/farmer/profile/profile';
+import Profile from '../FHome/profile/profile';
 // import Notification from './pages/notification';
 
 
