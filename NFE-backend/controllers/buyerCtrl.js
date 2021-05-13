@@ -93,6 +93,13 @@ const buyerCtrl = {
             res.status(500).json({msg:err.message})
         }
     },
+    // farmerProfile : async (req,res)=>{
+    //     try {
+    //         await Buyer.find
+    //     } catch (err) {
+    //         return res.status(500).json({msg:err.message})
+    //     }
+    // },
     editBuyer : async (req,res)=>{
         try {
             const {name,photo,product} = req.body;
