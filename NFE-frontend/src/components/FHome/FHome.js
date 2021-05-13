@@ -18,7 +18,7 @@ return (
 
 		<NavMenu>
 		<NavLink to='/farmerHome' activeStyle>
-			FarmerHome
+			Home
 		</NavLink>
 		<NavLink to='/profile' activeStyle>
 			Profile

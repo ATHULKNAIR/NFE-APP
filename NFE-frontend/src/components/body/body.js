@@ -7,6 +7,12 @@ import NotFound from '../utils/notFound';
 import Home from './home/home'
 import FLogin from './farmer/auth/FLogin';
 import FRegister from './farmer/auth/FRegister'
+import FHome from '../FHome/FHome';
+// import Bidding from './pages/bidding';
+// import Contract from './pages/contract';
+import Profile from '../body/farmer/profile/profile';
+// import Notification from './pages/notification';
+
 
 
 function Body() {
@@ -21,6 +27,8 @@ function Body() {
                 <Route path="/buyer/register" component={ isLogged ? NotFound : Register} exact />
                 <Route path="/farmer/login" component={isLogged ? NotFound : FLogin} exact />
                 <Route path="/farmer/register" component={ isLogged ? NotFound : FRegister} exact />
+                <Route path="/farmer/home" component={FHome} exact />
+                <Route path="/farmer/profile" component={Profile} exact />
 
 
             </Switch>
