@@ -52,23 +52,93 @@ const buyerCtrl = {
              const accesstoken = createAccessToken({id : buyer._id});
              const refreshtoken = createRefreshToken({id : buyer._id});
 
-             res.cookie('refreshtoken',refreshtoken);
-
-             res.json({accesstoken});
+             res.cookie('refreshtoken',refreshtoken,{
+                 httpOnly : true,
+                 path : '/buyer/refreshtoken',
+                 maxAge : 7*24*60*60*1000
+             });
+             
+             res.json({msg:"Logged In"});
          } catch (err) {
              res.status(500).json({msg:err.message})
          }
      },
+     getAccessToken : async (req,res)=>{
+        try {
+            const rf_token = req.cookies.refreshtoken;
+            if(!rf_token){
+                return res.status(400).json({msg:"Please Login..!"})
+            }
+            jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+              if(err) return res.status(400).json({msg: "Please login now!"})
+              const access_token = createAccessToken({id: user.id})
+                  res.json({access_token})
+            })
+        } catch (err) {
+            return res.status(500).json({msg:err.message})
+        }
+    },
 
      logout : async (req,res)=>{
         try {
-            res.clearCookie('refreshtoken')
+            res.clearCookie('refreshtoken',{
+                path : '/buyer/refreshtoken'
+            })
             return res.json({msg:"Logged Out"})
             
         } catch (err) {
           return res.status(500).json({msg:err.message})
         }
     },
+
+    getBuyerInfor : async (req,res)=>{
+        try {
+            const buyer  = await Buyer.findById(req.user.id).select("-password");
+            res.json(buyer.name);
+        } catch (err) {
+            res.status(500).json({msg:err.message});
+        }
+    },
+
+    getUsersAllInfor : async (req,res)=>{
+        try {
+            const buyer = await Buyer.find().select("-password");
+            res.json(buyer);
+        } catch (err) {
+            res.status(500).json({msg:err.message})
+        }
+    },
+    // farmerProfile : async (req,res)=>{
+    //     try {
+    //         await Buyer.find
+    //     } catch (err) {
+    //         return res.status(500).json({msg:err.message})
+    //     }
+    // },
+    editBuyer : async (req,res)=>{
+        try {
+            const {name,photo,product} = req.body;
+            // if(!name || !photo || !product){
+            //     return res.status(400).json({msg:"Please fill all fileds"});
+            // }
+            await Buyer.findOneAndUpdate({_id:req.user.id},{
+                name,photo,product
+            })
+            res.json({msg:"Updated..!"})
+        } catch (err) {
+            return res.status(500).json({msg:err.message});
+        }
+    },
+    deleteBuyer : async (req,res)=>{
+        try {
+            await Buyer.findByIdAndDelete(req.params.id);
+            res.json({msg:"Deleted Farmer"});
+        } catch (err) {
+            return res.status(500).json({msg:err.message});
+        }
+    }
+    
+    
 
 }
 

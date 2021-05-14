@@ -2,22 +2,22 @@ import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import {showErrMsg, showSuccessMsg} from '../../../utils/notification';
-import {isEmpty, isPhone, isLength, isMatch} from '../../../utils/validation'
+import {isEmpty, isEmail, isLength, isMatch} from '../../../utils/validation'
 
 
 const initialState = {
     name: '',
-    phoneNo: '',
+    email: '',
     password: '',
     cf_password: '',
     err: '',
     success: ''
 }
 
-function FRegister() {
+function BuyerRegister() {
     const [user, setUser] = useState(initialState)
 
-    const {name, phoneNo, password, cf_password, err, success} = user
+    const {name, email, password,cf_password, err, success} = user
 
     const handleChangeInput = e => {
         const {name, value} = e.target
@@ -30,8 +30,8 @@ function FRegister() {
         if(isEmpty(name) || isEmpty(password))
                 return setUser({...user, err: "Please fill in all fields.", success: ''})
 
-        if(!isPhone(phoneNo))
-            return setUser({...user, err: "Invalid phone.", success: ''})
+        if(!isEmail(email))
+            return setUser({...user, err: "Invalid emails.", success: ''})
 
         if(isLength(password))
             return setUser({...user, err: "Password must be at least 6 characters.", success: ''})
@@ -40,14 +40,14 @@ function FRegister() {
             return setUser({...user, err: "Password did not match.", success: ''})
 
         try {
-            const res = await axios.post('http://localhost:5000/farmer/register', {
-                name, phoneNo, password
+            const res = await axios.post('http://localhost:5000/buyer/register', {
+                name, email, password
             }).then((res)=>{
                 console.log(res.data   )
                 setUser({...user, err: '', success: res.data.msg})
             })
             
-         } catch (err) {
+        } catch (err) {
             err.response.data.msg && 
             setUser({...user, err: err.response.data.msg, success: ''})
         }
@@ -67,9 +67,9 @@ function FRegister() {
                 </div>
 
                 <div>
-                    <label htmlFor="phoneNo">Phone Number</label>
-                    <input type="text" placeholder="Enter PhoneNo" id="phoneNo"
-                    value={phoneNo} name="phoneNo" onChange={handleChangeInput} />
+                    <label htmlFor="email">Email Address</label>
+                    <input type="text" placeholder="Enter email address" id="email"
+                    value={email} name="email" onChange={handleChangeInput} />
                 </div>
 
                 <div>
@@ -89,9 +89,9 @@ function FRegister() {
                 </div>
             </form>
 
-            <p>Already an account? <Link to="/farmer/login">Login</Link></p>
+            <p>Already an account? <Link to="/buyer/login">Login</Link></p>
         </div>
     )
 }
 
-export default FRegister
+export default BuyerRegister

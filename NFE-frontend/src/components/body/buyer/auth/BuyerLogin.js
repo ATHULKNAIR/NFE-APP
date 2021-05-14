@@ -8,18 +8,18 @@ import {useDispatch} from 'react-redux'
 
 
 const initialState = {
-    phoneNo: '',
+    email: '',
     password: '',
     err: '',
     success: ''
 }
 
-function FLogin() {
+function BuyerLogin() {
     const [user, setUser] = useState(initialState)
     const dispatch = useDispatch()
     const history = useHistory()
 
-    const {phoneNo, password, err, success} = user
+    const {email, password, err, success} = user
 
     const handleChangeInput = e => {
         const {name, value} = e.target
@@ -30,14 +30,16 @@ function FLogin() {
     const handleSubmit = async e => {
         e.preventDefault()
         try {
-            const res = await axios.post('/farmer/login', {phoneNo, password})
+            const res = await axios.post('http://localhost:5000/buyer/login', {email, password})
+            .then((res)=>{
             setUser({...user, err: '', success: res.data.msg})
 
             localStorage.setItem('firstLogin', true)
-
             dispatch(dispatchLogin())
-            history.push("/")
-
+            history.push("/buyer/home")
+        })
+           
+           
         } catch (err) {
             err.response.data.msg && 
             setUser({...user, err: err.response.data.msg, success: ''})
@@ -54,9 +56,9 @@ function FLogin() {
 
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label htmlFor="phoneNo">Phone number</label>
-                    <input type="text" placeholder="Enter phone number" id="phone"
-                    value={phoneNo} name="phoneNo" onChange={handleChangeInput} />
+                    <label htmlFor="email">Email Address</label>
+                    <input type="text" placeholder="Enter email address" id="email"
+                    value={email} name="email" onChange={handleChangeInput} />
                 </div>
 
                 <div>
@@ -71,9 +73,14 @@ function FLogin() {
                 </div>
             </form>
 
-            <p>New Customer? <Link to="/farmer/register">Register</Link></p>
+            <p>New Customer? <Link to="/buyer/register">Register</Link></p>
+        
+            <div>
+              <Link to='/'>Back</Link>
+            </div>
         </div>
+        
     )
 }
 
-export default FLogin
+export default BuyerLogin

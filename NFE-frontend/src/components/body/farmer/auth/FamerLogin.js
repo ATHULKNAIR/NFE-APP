@@ -8,18 +8,18 @@ import {useDispatch} from 'react-redux'
 
 
 const initialState = {
-    email: '',
+    phoneNo: '',
     password: '',
     err: '',
     success: ''
 }
 
-function Login() {
+function FarmerLogin() {
     const [user, setUser] = useState(initialState)
     const dispatch = useDispatch()
     const history = useHistory()
 
-    const {email, password, err, success} = user
+    const {phoneNo, password, err, success} = user
 
     const handleChangeInput = e => {
         const {name, value} = e.target
@@ -30,13 +30,13 @@ function Login() {
     const handleSubmit = async e => {
         e.preventDefault()
         try {
-            const res = await axios.post('/buyer/login', {email, password})
+            const res = await axios.post('http://localhost:5000/farmer/login', {phoneNo, password})
             setUser({...user, err: '', success: res.data.msg})
 
-            localStorage.setItem('firstLogin', true)
+            localStorage.setItem('secondLogin', true)
 
             dispatch(dispatchLogin())
-            history.push("/")
+            history.push("/farmer/home")
 
         } catch (err) {
             err.response.data.msg && 
@@ -54,9 +54,9 @@ function Login() {
 
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label htmlFor="email">Email Address</label>
-                    <input type="text" placeholder="Enter email address" id="email"
-                    value={email} name="email" onChange={handleChangeInput} />
+                    <label htmlFor="phoneNo">Phone Number</label>
+                    <input type="text" placeholder="Enter phoneNo address" id="phoneNo"
+                    value={phoneNo} name="phoneNo" onChange={handleChangeInput} />
                 </div>
 
                 <div>
@@ -71,9 +71,12 @@ function Login() {
                 </div>
             </form>
 
-            <p>New Customer? <Link to="/buyer/register">Register</Link></p>
+            <p>New Customer? <Link to="/farmer/register">Register</Link></p>
+            <div>
+              <Link to='/'>Back</Link>
+            </div>
         </div>
     )
 }
 
-export default Login
+export default FarmerLogin

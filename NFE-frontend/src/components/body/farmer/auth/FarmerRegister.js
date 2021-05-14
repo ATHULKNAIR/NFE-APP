@@ -2,22 +2,22 @@ import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import {showErrMsg, showSuccessMsg} from '../../../utils/notification';
-import {isEmpty, isEmail, isLength, isMatch} from '../../../utils/validation'
+import {isEmpty, isLength, isMatch} from '../../../utils/validation'
 
 
 const initialState = {
     name: '',
-    email: '',
+    phoneNo: '',
     password: '',
     cf_password: '',
     err: '',
     success: ''
 }
 
-function Register() {
+function FamerRegister() {
     const [user, setUser] = useState(initialState)
 
-    const {name, email, password,cf_password, err, success} = user
+    const {name, phoneNo, password,cf_password, err, success} = user
 
     const handleChangeInput = e => {
         const {name, value} = e.target
@@ -30,9 +30,6 @@ function Register() {
         if(isEmpty(name) || isEmpty(password))
                 return setUser({...user, err: "Please fill in all fields.", success: ''})
 
-        if(!isEmail(email))
-            return setUser({...user, err: "Invalid emails.", success: ''})
-
         if(isLength(password))
             return setUser({...user, err: "Password must be at least 6 characters.", success: ''})
         
@@ -40,8 +37,8 @@ function Register() {
             return setUser({...user, err: "Password did not match.", success: ''})
 
         try {
-            const res = await axios.post('http://localhost:5000/buyer/register', {
-                name, email, password
+            const res = await axios.post('http://localhost:5000/farmer/register', {
+                name, phoneNo, password
             }).then((res)=>{
                 console.log(res.data   )
                 setUser({...user, err: '', success: res.data.msg})
@@ -67,9 +64,9 @@ function Register() {
                 </div>
 
                 <div>
-                    <label htmlFor="email">Email Address</label>
-                    <input type="text" placeholder="Enter email address" id="email"
-                    value={email} name="email" onChange={handleChangeInput} />
+                    <label htmlFor="phoneNo">Phone Number</label>
+                    <input type="text" placeholder="Enter phoneNo" id="phoneNo"
+                    value={phoneNo} name="phoneNo" onChange={handleChangeInput} />
                 </div>
 
                 <div>
@@ -89,9 +86,9 @@ function Register() {
                 </div>
             </form>
 
-            <p>Already an account? <Link to="/buyer/login">Login</Link></p>
+            <p>Already an account? <Link to="/farmer/login">Login</Link></p>
         </div>
     )
 }
 
-export default Register
+export default FamerRegister
