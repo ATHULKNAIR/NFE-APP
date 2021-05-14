@@ -1,6 +1,6 @@
 const farmerCtrl = require('../controllers/farmerCtrl');
 const auth = require('../middleware/auth');
-const authAdmin = require('../middleware/authAdmin');
+const farmerAdmin = require('../middleware/farmerAdmin');
 
 module.exports = function (app){
     app.use(function(req,res,next){
@@ -13,7 +13,7 @@ module.exports = function (app){
 
     app.post("/farmer/register",farmerCtrl.register);
     app.post("/farmer/login",farmerCtrl.login);
-    app.get("farmer/profile",auth,farmerCtrl.getFarmerInfor);
-    app.patch("farmer/profile/edit",auth,farmerCtrl.editFarmer);
-    app.get("/farmer/profile/all",auth,authAdmin,farmerCtrl.getUsersAllInfor);
+    app.get("/farmer/profile",auth,farmerCtrl.getFarmerInfor);
+    app.patch("/farmer/profile/edit",auth,farmerCtrl.editFarmer);
+    app.get("/farmer/profile/all",auth,farmerAdmin,farmerCtrl.getUsersAllInfor);
 }

@@ -1,6 +1,6 @@
 const buyerCtrl = require('../controllers/buyerCtrl');
 const auth = require('../middleware/auth');
-const authAdmin = require('../middleware/authAdmin');
+const buyerAdmin = require('../middleware/buyerAdmin');
 
 module.exports = function (app){
     app.use(function(req,res,next){
@@ -15,5 +15,5 @@ module.exports = function (app){
     app.post("/buyer/login",buyerCtrl.login);
     app.get("buyer/profile",auth,buyerCtrl.getBuyerInfor);
     app.patch("buyer/profile/edit",auth,buyerCtrl.editBuyer);
-    app.get("/buyer/profile/all",auth,authAdmin,buyerCtrl.getUsersAllInfor);
+    app.get("/buyer/profile/all",auth,buyerAdmin,buyerCtrl.getUsersAllInfor);
 }

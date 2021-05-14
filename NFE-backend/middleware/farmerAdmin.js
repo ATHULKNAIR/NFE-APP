@@ -1,10 +1,11 @@
-const User = require('../models/buyerModel');
+
+const User = require('../models/farmerModel');
  
-const authAdmin = async (req,res,next)=>{
+const farmerAdmin = async (req,res,next)=>{
     try {
         
         const user = await User.findOne({
-            _id : req.user.id
+            _id : req.userId    
         })
         if(user.role !== 0){
             return res.status(400).json({msg:"Admin access denied"})
@@ -16,4 +17,4 @@ const authAdmin = async (req,res,next)=>{
     }
 }
 
-module.exports = authAdmin;
+module.exports = farmerAdmin;

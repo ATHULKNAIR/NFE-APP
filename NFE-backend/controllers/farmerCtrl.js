@@ -81,7 +81,8 @@ const farmerCtrl = {
     
     getFarmerInfor : async (req,res)=>{
         try {
-            const farmer  = await Farmer.findById(req.user.id).select("-password");
+           
+            const farmer  = await Farmer.findById(req.userId).select("-password");
             res.json({farmer });
         } catch (err) {
             res.status(500).json({msg:err.message});
@@ -89,7 +90,7 @@ const farmerCtrl = {
     },
     getUsersAllInfor : async (req,res)=>{
         try {
-            const user = await Buyer.find().select("-password");
+            const user = await Farmer.find().select("-password");
             res.json(user);
         } catch (err) {
             res.status(500).json({msg:err.message})
