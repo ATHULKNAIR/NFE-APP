@@ -33,7 +33,7 @@ function FarmerLogin() {
             const res = await axios.post('http://localhost:5000/farmer/login', {phoneNo, password})
             setUser({...user, err: '', success: res.data.msg})
 
-            localStorage.setItem('secondLogin', true)
+            localStorage.setItem('farmerLogin', true)
 
             dispatch(dispatchLogin())
             history.push("/farmer/home")

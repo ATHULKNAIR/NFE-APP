@@ -15,41 +15,27 @@ function Header() {
         try {
             await axios.get('http://localhost/farmer/logout')
            
-                localStorage.removeItem('firstLogin')
+                localStorage.removeItem('farmerLogin')
                 window.location.href = "/farmer/login";
           
             
         } catch (err) {
-            window.location.href = "/";
+            window.location.href = "/farmer/login";
         }
     }
 
     const userLink = () => {
-        return <li className="drop-nav">
-           
-               
-                <li><Link to="/farmer/login" onClick={handleLogout}>Logout</Link></li>
-            
-        </li>
+        return <div className="drop-nav"> 
+                <Link to="/farmer/login" onClick={handleLogout}>Log out</Link>
+        </div>
     }
 
-    const transForm = {
-        transform: isLogged ? "translateY(-5px)" : 0
-    }
+    
 
     return (
         <header>
             <h2>National Farmers' Exchange</h2>
-            <ul style={transForm}>
-                
-               
-                {
-                    isLogged
-                    ? userLink()
-                    :null
-                }
-                
-            </ul>
+            <ul >{ isLogged ? userLink():null }</ul>
         </header>
     )
 }

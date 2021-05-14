@@ -28,6 +28,10 @@ const farmerSchema = new mongoose.Schema({
     products : {
         type : mongoose.Schema.ObjectId,
         ref  :"Product"
+    },
+    role:{
+        type:Number,
+        default : 1
     }
 
     

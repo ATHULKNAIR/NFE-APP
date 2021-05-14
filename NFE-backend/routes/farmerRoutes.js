@@ -1,17 +1,19 @@
-const express = require('express');
-const router = express.Router();
+const farmerCtrl = require('../controllers/farmerCtrl');
 const auth = require('../middleware/auth');
 const authAdmin = require('../middleware/authAdmin');
 
-const farmerCtrl = require('../controllers/farmerCtrl');
+module.exports = function (app){
+    app.use(function(req,res,next){
+       res.header(
+        "Access-Control-Allow-Headers",
+        "x-access-token, Origin, Content-Type, Accept"  
+       );
+       next();
+    })
 
-router.post('/register',farmerCtrl.register);
-router.post('/login',farmerCtrl.login);
-router.get('/logout',auth,farmerCtrl.logout);
-router.post('/refreshtoken',farmerCtrl.getAccessToken);
-router.get('/profile',auth,farmerCtrl.getFarmerInfor);
-router.get('/all_infor',auth,authAdmin,farmerCtrl.getUsersAllInfor)
-router.patch('/profile/edit',auth,farmerCtrl.editFarmer);
-router.delete('/buyer/delete/:id',auth,authAdmin,farmerCtrl.deleteFarmer);
-
-module.exports = router;
+    app.post("/farmer/register",farmerCtrl.register);
+    app.post("/farmer/login",farmerCtrl.login);
+    app.get("farmer/profile",auth,farmerCtrl.getFarmerInfor);
+    app.patch("farmer/profile/edit",auth,farmerCtrl.editFarmer);
+    app.get("/farmer/profile/all",auth,authAdmin,farmerCtrl.getUsersAllInfor);
+}

@@ -38,57 +38,47 @@ const farmerCtrl = {
 
     login : async (req,res)=>{
         try {
-            const {phoneNo,password} = req.body;
-            const farmer = await Farmer.findOne({phoneNo});
-            if(!farmer){
-                res.status(400).json({msg:"User doesnot exist"})
-            }
-            const isMatch = await bcrypt.compare(password,farmer.password);
-            if(!isMatch){
-                res.status(400).json({msg:"Incorrect Password"})
-            }
-
-            const accesstoken = createAccessToken({id:farmer._id});
-            const refreshtoken = createRefreshToken({id:farmer._id});
-
-            res.cookie('refreshtoken',refreshtoken,{
-                httpOnly : true,
-                path : '/farmer/refreshtoken',
-                maxAge : 7*24*60*60*1000
+            Farmer.findOne({phoneNo: req.body.phoneNo})
+            .exec((err, user) => {
+              if (err) {
+                res.status(500).send({ message: err });
+                return;
+              }
+              if (!user) {
+                return res.status(404).send({ message: "User Not found." });
+              }
+        
+              var passwordIsValid = bcrypt.compareSync(
+                req.body.password,
+                user.password
+              );
+        
+              if (!passwordIsValid) {
+                return res.status(401).send({
+                  accessToken: null,
+                  message: "Invalid Password!"
+                });
+              }
+        
+              var token = jwt.sign({ id: user.id }, process.env.ACCESS_TOKEN_SECRET, {
+                expiresIn: 86400 // 24 hours
+              });
+        
+             
+              res.status(200).send({
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                accessToken: token
+              });
             });
-
-            res.json({msg:"Logged In"});
             
         } catch (err) {
             return res.status(500).json({msg:err.message});
         }
     },
-    getAccessToken : async (req,res)=>{
-        try {
-            const rf_token = req.cookies.refreshtoken;
-            if(!rf_token){
-                return res.status(400).json({msg:"Please Login..!"})
-            }
-            jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-              if(err) return res.status(400).json({msg: "Please login now!"})
-              const access_token = createAccessToken({id: user.id})
-                  res.json({access_token})
-            })
-        } catch (err) {
-            return res.status(500).json({msg:err.message})
-        }
-    },
+   
     
-     logout : async (req,res)=>{
-        try {
-            res.clearCookie('refreshtoken',{
-                path : '/farmer/refreshtoken'
-            })
-            return res.json({msg:"Logged Out"})
-        } catch (err) {
-            return res.status(500).json({msg:err.message});
-        }
-    },
     getFarmerInfor : async (req,res)=>{
         try {
             const farmer  = await Farmer.findById(req.user.id).select("-password");
@@ -131,13 +121,7 @@ const farmerCtrl = {
 
     
 }
- 
-const createAccessToken = (user)=>{
-    return jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{expiresIn:'10m'})
-}
-const createRefreshToken = (user)=>{
-    return jwt.sign(user,process.env.REFRESH_TOKEN_SECRET,{expiresIn : '7d'})
-}
+
 
 module.exports = farmerCtrl;
 

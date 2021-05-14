@@ -1,16 +1,19 @@
-const express = require('express');
-const router = express.Router();
 const buyerCtrl = require('../controllers/buyerCtrl');
 const auth = require('../middleware/auth');
-const authAdmin = require('../middleware/authAdmin')
+const authAdmin = require('../middleware/authAdmin');
 
+module.exports = function (app){
+    app.use(function(req,res,next){
+       res.header(
+        "Access-Control-Allow-Headers",
+        "x-access-token, Origin, Content-Type, Accept"  
+       );
+       next();
+    })
 
-router.post('/register',buyerCtrl.register);
-router.post('/login',buyerCtrl.login);
-router.get('/logout',auth,buyerCtrl.logout);
-router.post('/refreshtoken',buyerCtrl.getAccessToken);
-router.get('/profile',auth,buyerCtrl.getBuyerInfor);
-router.get('/all_infor',auth,authAdmin,buyerCtrl.getUsersAllInfor)
-router.patch('/profile/edit',auth,buyerCtrl.editBuyer);
-router.delete('/buyer/delete/:id',auth,authAdmin,buyerCtrl.deleteBuyer);
-module.exports = router;
+    app.post("/buyer/register",buyerCtrl.register);
+    app.post("/buyer/login",buyerCtrl.login);
+    app.get("buyer/profile",auth,buyerCtrl.getBuyerInfor);
+    app.patch("buyer/profile/edit",auth,buyerCtrl.editBuyer);
+    app.get("/buyer/profile/all",auth,authAdmin,buyerCtrl.getUsersAllInfor);
+}

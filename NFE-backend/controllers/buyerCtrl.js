@@ -39,57 +39,44 @@ const buyerCtrl = {
 
      login : async (req,res)=>{
          try {
-             const {email,password} = req.body;
-             const buyer = await Buyer.findOne({email});
-             if(!buyer){
-                 res.status(400).json({msg:"User doesnot exist"})
-             }
-             const isMatch = await bcrypt.compare(password,buyer.password);
-             if(!isMatch){
-                 res.status(400).json({msg:"Incorrect Password !"})
-             }
+            Buyer.findOne({email: req.body.email})
+            .exec((err, user) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
+            if (!user) {
+                return res.status(404).send({ message: "User Not found." });
+            }
 
-             const accesstoken = createAccessToken({id : buyer._id});
-             const refreshtoken = createRefreshToken({id : buyer._id});
+            var passwordIsValid = bcrypt.compareSync(
+                req.body.password,
+                user.password
+            );
 
-             res.cookie('refreshtoken',refreshtoken,{
-                 httpOnly : true,
-                 path : '/buyer/refreshtoken',
-                 maxAge : 7*24*60*60*1000
-             });
-             
-             res.json({msg:"Logged In"});
+            if (!passwordIsValid) {
+                return res.status(401).send({
+                accessToken: null,
+                message: "Invalid Password!"
+                });
+            }
+
+            var token = jwt.sign({ id: user.id }, process.env.ACCESS_TOKEN_SECRET, {
+                expiresIn: 86400 // 24 hours
+            });
+
+            
+            res.status(200).send({
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                accessToken: token
+            });
+            });
          } catch (err) {
              res.status(500).json({msg:err.message})
          }
      },
-     getAccessToken : async (req,res)=>{
-        try {
-            const rf_token = req.cookies.refreshtoken;
-            if(!rf_token){
-                return res.status(400).json({msg:"Please Login..!"})
-            }
-            jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-              if(err) return res.status(400).json({msg: "Please login now!"})
-              const access_token = createAccessToken({id: user.id})
-                  res.json({access_token})
-            })
-        } catch (err) {
-            return res.status(500).json({msg:err.message})
-        }
-    },
-
-     logout : async (req,res)=>{
-        try {
-            res.clearCookie('refreshtoken',{
-                path : '/buyer/refreshtoken'
-            })
-            return res.json({msg:"Logged Out"})
-            
-        } catch (err) {
-          return res.status(500).json({msg:err.message})
-        }
-    },
 
     getBuyerInfor : async (req,res)=>{
         try {
@@ -108,13 +95,7 @@ const buyerCtrl = {
             res.status(500).json({msg:err.message})
         }
     },
-    // farmerProfile : async (req,res)=>{
-    //     try {
-    //         await Buyer.find
-    //     } catch (err) {
-    //         return res.status(500).json({msg:err.message})
-    //     }
-    // },
+   
     editBuyer : async (req,res)=>{
         try {
             const {name,photo,product} = req.body;
@@ -147,11 +128,4 @@ function validateEmail(email) {
     return re.test(email);
 } 
 
-
-const createAccessToken = (user)=>{
-    return jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{expiresIn:'10m'})
-}
-const createRefreshToken = (user)=>{
-    return jwt.sign(user,process.env.REFRESH_TOKEN_SECRET,{expiresIn:'7d'})
-} 
 module.exports = buyerCtrl;

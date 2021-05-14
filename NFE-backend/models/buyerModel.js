@@ -35,7 +35,7 @@ const buyerSchema = new mongoose.Schema({
     },
     role : {
         type : Number,
-        default : 0
+        default : 2
     }
 });
 
