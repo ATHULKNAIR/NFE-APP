@@ -65,13 +65,22 @@ const buyerCtrl = {
                 expiresIn: 86400 // 24 hours
             });
 
-            
+            var authorities = [];
+
+            if(user.role === 0){
+
+              authorities.push("Admin");
+            }else if(user.role === 1){
+                authorities.push("Farmer")
+            }else{
+                authorities.push("Buyer")
+            }
             res.status(200).send({
                 id: user._id,
                 name: user.name,
                 email: user.email,
                 accessToken: token,
-                role:user.role,
+                role:authorities,
                 photo:user.photo
             });
             });
@@ -119,8 +128,14 @@ const buyerCtrl = {
         } catch (err) {
             return res.status(500).json({msg:err.message});
         }
+    },
+
+    adminBoard : (req,res)=>{
+        res.status(200).json({msg:"Admin Content"})
+    },
+    buyerHome : (req,res)=>{
+        res.status(200).json({msg:"Buyer Home"})
     }
-    
     
 
 }

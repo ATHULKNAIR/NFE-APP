@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 
-import {getProfile} from '../services/buyerService';
+import {getBuyerProfile} from '../services/buyerService';
 
 const BuyerBoard = ()=>{
     const [content,setContent] = useState("");
     useEffect(() => {
-        getProfile().then(
+        getBuyerProfile().then(
           (response) => {
             setContent(response.data);
           },

@@ -16,4 +16,6 @@ module.exports = function (app){
     app.get("/buyer/profile",auth,buyerCtrl.getBuyerInfor);
     app.patch("/buyer/profile/edit",auth,buyerCtrl.editBuyer);
     app.get("/buyer/profile/all",auth,buyerAdmin,buyerCtrl.getUsersAllInfor);
+    app.get('/buyer/home',auth,buyerCtrl.buyerHome);
+    app.get('/buyer/admin/home',auth,buyerAdmin,buyerCtrl.adminBoard);
 }

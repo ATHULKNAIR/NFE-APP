@@ -63,15 +63,22 @@ const farmerCtrl = {
               var token = jwt.sign({ id: user.id }, process.env.ACCESS_TOKEN_SECRET, {
                 expiresIn: 86400 // 24 hours
               });
-        
+              var authorities = [];
+
+              if(user.role === 0){
+
+                authorities.push("Admin");
+              }else if(user.role === 1){
+                  authorities.push("Farmer")
+              }
              
               res.status(200).send({
                 id: user._id,
                 name: user.name,
-                email: user.email,
+                phoneNo: user.phoneNo,
                 accessToken: token,
                 photo:user.photo,
-                role:user.role
+                role : authorities
               });
             });
             
@@ -120,6 +127,12 @@ const farmerCtrl = {
         } catch (err) {
             return res.status(500).json({msg:err.message});
         }
+    },
+    adminBoard : (req,res)=>{
+        res.status(200).json({msg:"Admin Content"})
+    },
+    farmerHome : (req,res)=>{
+        res.status(200).json({msg:"Farmer Home"})
     }
 
     

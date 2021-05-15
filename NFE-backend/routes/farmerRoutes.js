@@ -16,4 +16,6 @@ module.exports = function (app){
     app.get("/farmer/profile",auth,farmerCtrl.getFarmerInfor);
     app.patch("/farmer/profile/edit",auth,farmerCtrl.editFarmer);
     app.get("/farmer/profile/all",auth,farmerAdmin,farmerCtrl.getUsersAllInfor);
+    app.get('/farmer/home',auth,farmerCtrl.farmerHome);
+    app.get('/farmer/admin/home',auth,farmerAdmin,farmerCtrl.adminBoard);
 }

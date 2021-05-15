@@ -10,10 +10,16 @@ import BuyerRegister from './BuyerDetails/components/BuyerRegister';
 import BuyerProfile from './BuyerDetails/components/BuyerProfile';
 import BuyerBoard from './BuyerDetails/components/BuyerBoard';
 
+import FarmerRegister from './FarmerDetails/components/FarmerRegister';
+import FarmerLogin from './FarmerDetails/components/FarmerLogin';
+import FarmerProfile from './FarmerDetails/components/FarmerProfile';
+import FarmerBoard from './FarmerDetails/components/FarmerBoard';
+
+import {FarmLogin} from './FarmerDetails/actions/auth';  
 
 import {Logout} from './BuyerDetails/actions/auth';
 import { clearMessage } from "./BuyerDetails/actions/messages";
-import { history } from "./BuyerDetails/helpers/history";
+import { history } from "./helpers/history";
 
 
 const App=()=> {
@@ -29,6 +35,9 @@ const App=()=> {
     
    const LogOut = ()=>{
      dispatch(Logout());
+   }
+   const FarmerLogOut = () =>{
+     dispatch(FarmLogin());
    }
 
   return (
@@ -46,7 +55,7 @@ const App=()=> {
           {currentUser ? (
             <div className="navbar-nav ml-auto">
               <li className="nav-item">
-                <Link to={"buyer/profile"} className="nav-link">
+                <Link to={"/profile"} className="nav-link">
                   {currentUser.name}
                 </Link>
               </li>
@@ -79,6 +88,11 @@ const App=()=> {
             <Route exact path ="/buyer/register" component={BuyerRegister} />
             <Route exact path ="/buyer/profile" component={BuyerProfile} />
             <Route exact path ="/buyer/profile" component={BuyerBoard} />
+            <Route exact path ="/farmer/login" component={FarmerLogin} />
+            <Route exact path ="/farmer/register" component={FarmerRegister} />
+            <Route exact path ="/farmer/profile" component={FarmerProfile} />
+            <Route exact path ="/farmer/profile" component={FarmerBoard} />
+
           </Switch>
         </div>
       </div>
