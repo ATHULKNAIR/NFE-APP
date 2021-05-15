@@ -69,7 +69,9 @@ const farmerCtrl = {
                 id: user._id,
                 name: user.name,
                 email: user.email,
-                accessToken: token
+                accessToken: token,
+                photo:user.photo,
+                role:user.role
               });
             });
             

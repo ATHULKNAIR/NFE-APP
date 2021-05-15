@@ -2,6 +2,7 @@ import React from "react";
 import { Redirect } from 'react-router-dom';
 import { useSelector } from "react-redux";
 
+
 const BuyerProfile = ()=>{
 
     const {user:currentUser} = useSelector((state)=>state.auth)
@@ -15,7 +16,7 @@ const BuyerProfile = ()=>{
                 <h3><strong>{currentUser.name}</strong></h3>
             </header>
             <div>
-                <img src={currentUser.photo ? currentUser.photo :"https://res.cloudinary.com/mycartdb/image/upload/v1620580596/BuyerPic_kvbzkf.png"} alt="profile-image"
+                <img src={currentUser.photo} alt="Profile Pic"
                      className="profile-img-card"/>
                      
             </div>
