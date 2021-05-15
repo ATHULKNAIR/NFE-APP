@@ -25,8 +25,8 @@ app.use(fileUpload({
 
 app.use('/farmer',require('./routes/farmerRoutes'));   
 app.use('/buyer',require('./routes/buyerRoutes'));   
+app.use('/product',require('./routes/productRoutes'));
 app.use('/upload',require('./routes/upload'));
-
 app.listen(5000,()=>{
     console.log("Listening to port 5000")
 });
