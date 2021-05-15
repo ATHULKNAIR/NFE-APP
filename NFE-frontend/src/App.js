@@ -5,6 +5,8 @@ import { Router, Switch, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
+import Home from './helpers/Home';
+
 import BuyerLogin from './BuyerDetails/components/BuyerLogin';
 import BuyerRegister from './BuyerDetails/components/BuyerRegister';
 import BuyerProfile from './BuyerDetails/components/BuyerProfile';
@@ -15,9 +17,9 @@ import FarmerLogin from './FarmerDetails/components/FarmerLogin';
 import FarmerProfile from './FarmerDetails/components/FarmerProfile';
 import FarmerBoard from './FarmerDetails/components/FarmerBoard';
 
-import {FarmLogin} from './FarmerDetails/actions/auth';  
-
+ 
 import {Logout} from './BuyerDetails/actions/auth';
+
 import { clearMessage } from "./BuyerDetails/actions/messages";
 import { history } from "./helpers/history";
 
@@ -25,6 +27,8 @@ import { history } from "./helpers/history";
 const App=()=> {
 
    const {user : currentUser} = useSelector(state => state.auth)
+ 
+
    const dispatch = useDispatch()
 
    useEffect(()=>{
@@ -36,20 +40,14 @@ const App=()=> {
    const LogOut = ()=>{
      dispatch(Logout());
    }
-   const FarmerLogOut = () =>{
-     dispatch(FarmLogin());
-   }
 
   return (
     <Router history={history}>
       <div>
+      
         <nav className="navbar navbar-expand navbar-dark bg-dark">
           <div className="navbar-nav mr-auto">
-            {currentUser && (
-              <li className='nav-item'>
-                <Link to={"/buyer"} className="nav-link"> User </Link>
-              </li>
-            )}
+            {currentUser}
           </div>
 
           {currentUser ? (
@@ -60,7 +58,7 @@ const App=()=> {
                 </Link>
               </li>
               <li className="nav-item">
-                <a href="/buyer/login" className="nav-link" onClick={LogOut}>
+                <a href="/" className="nav-link" onClick={LogOut}>
                   LogOut
                 </a>
               </li>
@@ -68,22 +66,13 @@ const App=()=> {
             </div>
           ):(
             <div className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link to={"/buyer/login"} className="nav-link">
-                  Login
-                </Link>
-              </li>
-
-              <li className="nav-item">
-                <Link to={"/buyer/register"} className="nav-link">
-                  Register
-                </Link>
-              </li>
+                  <div className="nav-link">National Farmers Exchange</div>     
             </div>
           )}
         </nav>
         <div className="container mt-3">
           <Switch>
+            <Route exact path='/' component={Home} />
             <Route exact path ="/buyer/login" component={BuyerLogin} />
             <Route exact path ="/buyer/register" component={BuyerRegister} />
             <Route exact path ="/buyer/profile" component={BuyerProfile} />

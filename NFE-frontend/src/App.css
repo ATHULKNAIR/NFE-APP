@@ -2,7 +2,14 @@ label {
     display: block;
     margin-top: 10px;
   }
+  .ml-auto{
+    height:100px
+  }
   
+  .nav-link{
+    font-size: 50px;
+    
+  }
   .card-container.card {
     max-width: 350px !important;
     padding: 40px 40px;
