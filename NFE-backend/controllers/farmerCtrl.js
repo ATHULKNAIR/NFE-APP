@@ -67,7 +67,7 @@ const farmerCtrl = {
              
               res.status(200).send({
                 id: user._id,
-                username: user.username,
+                name: user.name,
                 email: user.email,
                 accessToken: token
               });

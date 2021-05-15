@@ -1,20 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import DataProvider from './redux/store';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
 
+import App  from './App'
+import store from './BuyerDetails/BuyerStore'
 
-import App from './App';
 
 
 ReactDOM.render(
-
-<React.StrictMode>
-<DataProvider>
+  <Provider store={store}>
     <App />
-    </DataProvider>
-</React.StrictMode>,
-    document.getElementById('root')
-    );
+  </Provider>,
+  document.getElementById('root')
+)
+
 
 
 

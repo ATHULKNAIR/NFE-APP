@@ -68,9 +68,11 @@ const buyerCtrl = {
             
             res.status(200).send({
                 id: user._id,
-                username: user.username,
+                name: user.name,
                 email: user.email,
-                accessToken: token
+                accessToken: token,
+                role:user.role,
+                photo:user.photo
             });
             });
          } catch (err) {
