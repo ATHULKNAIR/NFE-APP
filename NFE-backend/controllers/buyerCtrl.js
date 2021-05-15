@@ -80,8 +80,8 @@ const buyerCtrl = {
 
     getBuyerInfor : async (req,res)=>{
         try {
-            const buyer  = await Buyer.findById(req.user.id).select("-password");
-            res.json(buyer.name);
+            const buyer  = await Buyer.findById(req.userId).select("-password");
+            res.json(buyer);
         } catch (err) {
             res.status(500).json({msg:err.message});
         }
